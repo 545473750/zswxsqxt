@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!ELEMENT configuration (mappers)>
+<!ATTLIST configuration
+develop CDATA #IMPLIED
+>
+<!ELEMENT mappers (mapper+)>
+
+<!ELEMENT mapper EMPTY>
+<!ATTLIST mapper
+resource CDATA #IMPLIED
+url CDATA #IMPLIED
+>
