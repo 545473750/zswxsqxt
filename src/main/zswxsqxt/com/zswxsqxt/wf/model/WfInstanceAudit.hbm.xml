@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+ <!--流程审核表-->
+<hibernate-mapping>
+	<class name="com.zswxsqxt.wf.model.WfInstanceAudit" table="wf_instance_audit">
+
+		<id name="id" type="java.lang.String">
+			<meta attribute="name">id</meta>
+			<column name="id" not-null="true"   length="32"  />
+			<generator class="uuid" />
+		</id>
+
+		<property name="result" type="java.lang.Integer">
+			<meta attribute="name">审核结果</meta>
+			<column name="result" not-null="false"/>
+		</property>
+
+		<property name="opinion" type="java.lang.String">
+			<meta attribute="name">审核意见</meta>
+			<column name="opinion" not-null="false"   sql-type="text" />
+		</property>
+
+		<property name="auditUserId" type="java.lang.String">
+			<meta attribute="name">审核人</meta>
+			<column name="auditUserId" not-null="false"   length="32"  />
+		</property>
+
+		<property name="auditUserName" type="java.lang.String">
+			<meta attribute="name">审核人姓名</meta>
+			<column name="auditUserName" not-null="false"   length="100"  />
+		</property>
+		<property name="ts" type="timestamp">
+			<meta attribute="name">创建时间</meta>
+			<column name="ts" not-null="true" sql-type="datetime" />
+		</property>
+
+		<many-to-one name="wfInstanceNode" class="com.zswxsqxt.wf.model.WfInstanceNode" lazy="false"  cascade="none" not-null="true">
+			<meta attribute="name">实例节点</meta>
+			<column name="iaId"  sql-type="varchar(32)" />
+		</many-to-one>
+	</class>
+</hibernate-mapping>

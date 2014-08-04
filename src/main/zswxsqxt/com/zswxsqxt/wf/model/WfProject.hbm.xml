@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+ <!--流程表-->
+<hibernate-mapping>
+	<class name="com.zswxsqxt.wf.model.WfProject" table="wf_project">
+
+		<id name="id" type="java.lang.String">
+			<meta attribute="name">id</meta>
+			<column name="id" not-null="true"   length="32"  />
+			<generator class="uuid" />
+		</id>
+
+		<property name="name" type="java.lang.String">
+			<meta attribute="name">名称</meta>
+			<column name="name" not-null="false"   length="100"  />
+		</property>
+		
+		<property name="groupFlag" type="java.lang.String">
+			<meta attribute="name"></meta>
+			<meta attribute="comment">流程类别（数据字典中选择）</meta>
+			<column name="groupFlag" not-null="false" length="32"/>
+		</property>
+		
+		<property name="useState" type="java.lang.Integer">
+			<meta attribute="name"></meta>
+			<meta attribute="comment">0，未启用，1，启用，2，停止</meta>
+			<column name="useState" not-null="false"   sql-type="int" />
+		</property>
+		
+		<property name="addUserId" type="java.lang.String">
+			<meta attribute="name">添加人</meta>
+			<column name="addUserId" not-null="false"   length="32"  />
+		</property>
+
+		<property name="addUserName" type="java.lang.String">
+			<meta attribute="name">添加人姓名</meta>
+			<column name="addUserName" not-null="false"   length="100"  />
+		</property>
+
+		<property name="updateTime" type="date">
+			<meta attribute="name">最后更新时间</meta>
+			<meta attribute="comment">1表未确认,2表确认通过,3表未录取</meta>
+			<column name="updateTime" not-null="false"   sql-type="datetime" />
+		</property>
+
+		<property name="description" type="java.lang.String">
+			<meta attribute="name">描述</meta>
+			<column name="description" not-null="false"   sql-type="text" />
+		</property>
+		<property name="ts" type="timestamp">
+			<meta attribute="name">创建时间</meta>
+			<column name="ts" not-null="true" sql-type="datetime" />
+		</property>
+
+		 <set name="wfWorks">
+			<meta attribute="name">流程工作表</meta>
+		 	<key column="id" />
+		 	<one-to-many class="com.zswxsqxt.wf.model.WfWork" />
+		</set>
+
+		 <set name="wfActivitys">
+			<meta attribute="name">流程节点表</meta>
+		 	<key column="projectId" />
+		 	<one-to-many class="com.zswxsqxt.wf.model.WfActivity" />
+		</set>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+ <!--流程节点表-->
+<hibernate-mapping>
+	<class name="com.zswxsqxt.wf.model.WfActivity" table="wf_activity">
+
+		<id name="id" type="java.lang.String">
+			<meta attribute="name">id</meta>
+			<column name="id" not-null="true"   length="32"  />
+			<generator class="uuid" />
+		</id>
+
+		<property name="name" type="java.lang.String">
+			<meta attribute="name">名称</meta>
+			<column name="name" not-null="false"   length="100"  />
+		</property>
+
+		<property name="orderNum" type="java.lang.Integer">
+			<meta attribute="name">节点顺序</meta>
+			<column name="orderNum" not-null="false"   sql-type="int" />
+		</property>
+
+		<property name="actType" type="java.lang.Integer">
+			<meta attribute="name">节点类型</meta>
+			<meta attribute="comment">顺序，并行分支，排它选择，合并，启动，结束</meta>
+			<column name="actType" not-null="false"   sql-type="int" />
+		</property>
+
+		<property name="actFlag" type="java.lang.Integer">
+			<meta attribute="name">节点状态</meta>
+			<meta attribute="comment">是否完成标识，节点运行状态</meta>
+			<column name="actFlag" not-null="false"   sql-type="int" />
+		</property>
+
+		<property name="description" type="java.lang.String">
+			<meta attribute="name">功能描述</meta>
+			<column name="description" not-null="false"   sql-type="text" />
+		</property>
+
+		<property name="url" type="java.lang.String">
+			<meta attribute="name">路径</meta>
+			<column name="url" not-null="false"   length="200"  />
+		</property>
+
+		<property name="groupFlag" type="java.lang.String">
+			<meta attribute="name">所在组</meta>
+			<meta attribute="comment">1表课程，2表协作组，3表示组班；4表示公文</meta>
+			<column name="groupFlag" not-null="false"   length="10"  />
+		</property>
+
+		<property name="share" type="java.lang.String">
+			<meta attribute="name">专家组审核是否共享审核信息</meta>
+			<column name="share" not-null="false"   length="1"  />
+		</property>
+		<property name="ts" type="timestamp">
+			<meta attribute="name">创建时间</meta>
+			<column name="ts" not-null="true" sql-type="datetime" />
+		</property>
+
+		<many-to-one name="wfProject" class="com.zswxsqxt.wf.model.WfProject" lazy="false"  cascade="none" not-null="true">
+			<meta attribute="name">工程id</meta>
+			<column name="projectId"  sql-type="varchar(32)" />
+		</many-to-one>
+
+		<many-to-one name="wfFunction" class="com.zswxsqxt.wf.model.WfFunction" lazy="false" insert="false" update="false" cascade="none" not-null="true">
+			<meta attribute="name">功能</meta>
+			<column name="funId"  sql-type="varchar(32)" />
+		</many-to-one>
+		
+		<property name="funId" type="java.lang.String">
+			<meta attribute="name">功能id</meta>
+			<column name="funId" not-null="false"   length="32"  />
+		</property>	
+		
+		 <set name="wfActivityParticipans">
+			<meta attribute="name">流程节点参与者</meta>
+		 	<key column="actId" />
+		 	<one-to-many class="com.zswxsqxt.wf.model.WfActivityParticipan" />
+		</set>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+ <!--流程工作表-->
+<hibernate-mapping>
+	<class name="com.zswxsqxt.wf.model.WfWork" table="wf_work">
+
+		<id name="id" type="java.lang.String">
+			<meta attribute="name">id</meta>
+			<column name="id" not-null="true"   length="32"  />
+			<generator class="uuid" />
+		</id>
+
+		<property name="projectId" type="java.lang.String">
+			<meta attribute="name">工程id</meta>
+			<column name="projectId" not-null="false"   length="32"  />
+		</property>
+
+		<property name="name" type="java.lang.String">
+			<meta attribute="name">当前业务名称</meta>
+			<column name="name" not-null="false"   length="32"  />
+		</property>
+
+		<property name="startTime" type="date">
+			<meta attribute="name">开始时间</meta>
+			<meta attribute="comment">1表未确认,2表确认通过,3表未录取</meta>
+			<column name="startTime" not-null="false"   sql-type="datetime" />
+		</property>
+
+		<property name="endTime" type="date">
+			<meta attribute="name">结束时间</meta>
+			<meta attribute="comment">顺序，并行分支，排它选择，合并，启动，结束</meta>
+			<column name="endTime" not-null="false"   sql-type="datetime" />
+		</property>
+
+		<property name="workState" type="java.lang.Integer">
+			<meta attribute="name">状态</meta>
+			<meta attribute="comment">1表未启动，8表非正常结束,9表正常结束</meta>
+			<column name="workState" not-null="false"   sql-type="int" />
+		</property>
+
+		<property name="userId" type="java.lang.String">
+			<meta attribute="name">启动人</meta>
+			<column name="userId" not-null="false"   length="32"  />
+		</property>
+
+		<property name="userName" type="java.lang.String">
+			<meta attribute="name">启动人姓名</meta>
+			<column name="userName" not-null="false"   length="100"  />
+		</property>
+		<property name="ts" type="timestamp">
+			<meta attribute="name">创建时间</meta>
+			<column name="ts" not-null="true" sql-type="datetime" />
+		</property>
+
+		<many-to-one name="wfProject" class="com.zswxsqxt.wf.model.WfProject" lazy="false"  cascade="none" insert="false" update="false" >
+			<meta attribute="name">id</meta>
+			<column name="projectId"  sql-type="varchar(32)" />
+		</many-to-one>
+
+		 <set name="wfWorkProcesss">
+			<meta attribute="name">流程工作任务表</meta>
+			<key column="workId" />
+		 	<one-to-many class="com.zswxsqxt.wf.model.WfWorkProcess" />
+		</set>
+
+		 <set name="wfWorkResults">
+			<meta attribute="name">流程</meta>
+		 	<key column="workId" />
+		 	<one-to-many class="com.zswxsqxt.wf.model.WfWorkResult"/>
+		</set>
+	</class>
+</hibernate-mapping>

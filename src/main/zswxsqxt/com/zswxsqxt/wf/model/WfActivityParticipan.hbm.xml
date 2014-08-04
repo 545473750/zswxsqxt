@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+ <!--流程节点参与者-->
+<hibernate-mapping>
+	<class name="com.zswxsqxt.wf.model.WfActivityParticipan" table="wf_activity_participan">
+
+		<id name="id" type="java.lang.String">
+			<meta attribute="name">id</meta>
+			<column name="id" not-null="true"   length="32"  />
+			<generator class="uuid" />
+		</id>
+
+		<property name="refId" type="java.lang.String">
+			<meta attribute="name">关联id</meta>
+			<meta attribute="comment">用户ID,部门ID,角色ID</meta>
+			<column name="refId" not-null="false"   length="32"  />
+		</property>
+
+		<property name="refName" type="java.lang.String">
+			<meta attribute="name">关联名称</meta>
+			<column name="refName" not-null="false"  length="50" />
+		</property>
+		
+		<property name="refType" type="java.lang.Integer">
+			<meta attribute="name">关联类型</meta>
+			<meta attribute="comment">１表用户，２表部门，３表角色</meta>
+			<column name="refType" not-null="false"   sql-type="int" />
+		</property>
+		
+		<property name="remark" type="java.lang.String">
+			<meta attribute="name">备注</meta>
+			<meta attribute="comment">1表未确认,2表确认通过,3表未录取</meta>
+			<column name="remark" not-null="false"   sql-type="text" />
+		</property>
+		<property name="ts" type="timestamp">
+			<meta attribute="name">创建时间</meta>
+			<column name="ts" not-null="true" sql-type="datetime" />
+		</property>
+
+		<many-to-one name="wfActivity" class="com.zswxsqxt.wf.model.WfActivity" insert="false" update="false" lazy="false"  cascade="none" not-null="true">
+			<meta attribute="name">节点id</meta>
+			<column name="actId"  sql-type="varchar(32)" />
+		</many-to-one>
+		<property name="activityId" type="java.lang.String">
+			<meta attribute="name">节点id</meta>
+			<column name="actId" not-null="false"   length="32"  />
+		</property>
+		<many-to-one name="organization" class="com.opendata.organiz.model.Organization" insert="false" update="false" lazy="false"  cascade="none" not-null="true">
+			<meta attribute="name">单位id</meta>
+			<column name="orgId"  sql-type="varchar(32)" />
+		</many-to-one>
+		<property name="orgId" type="java.lang.String">
+			<meta attribute="name">单位id</meta>
+			<column name="orgId" not-null="false"   length="32"  />
+		</property>
+	</class>
+</hibernate-mapping>

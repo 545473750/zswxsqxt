@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+ <!--流程实例-->
+<hibernate-mapping>
+	<class name="com.zswxsqxt.wf.model.WfInstance" table="wf_Instance">
+
+		<id name="id" type="java.lang.String">
+			<meta attribute="name">id</meta>
+			<column name="id" not-null="true"   length="32"  />
+			<generator class="uuid" />
+		</id>
+
+		<property name="name" type="java.lang.String">
+			<meta attribute="name">流程名称</meta>
+			<column name="name" not-null="false"   length="32"  />
+		</property>
+
+		<property name="state" type="java.lang.Integer">
+			<meta attribute="name">当前状态</meta>
+			<meta attribute="comment">1表未启动，8表非正常结束,9表正常结束</meta>
+			<column name="state" not-null="false"   sql-type="int" />
+		</property>
+		<property name="ts" type="timestamp">
+			<meta attribute="name">创建时间</meta>
+			<column name="ts" not-null="true" sql-type="datetime" />
+		</property>
+
+		<property name="targetId" type="java.lang.String">
+			<meta attribute="name">被审核数据项的ID</meta>
+			<column name="target_id" not-null="false" length="32"/>
+		</property>
+
+		 <set name="wfInstanceNodes" cascade="delete">
+			<meta attribute="name">流程实例节点表</meta>
+		 	<key column="instanceId" />
+		 	<one-to-many class="com.zswxsqxt.wf.model.WfInstanceNode" />
+		</set>
+	</class>
+</hibernate-mapping>

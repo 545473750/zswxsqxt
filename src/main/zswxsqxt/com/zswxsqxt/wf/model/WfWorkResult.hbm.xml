@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+ <!--流程工作结果-->
+<hibernate-mapping>
+	<class name="com.zswxsqxt.wf.model.WfWorkResult" table="wf_work_result">
+
+		<id name="id" type="java.lang.String">
+			<meta attribute="name">id</meta>
+			<column name="id" not-null="true"   length="32"  />
+			<generator class="uuid" />
+		</id>
+
+		<property name="proResult" type="java.lang.Integer">
+			<meta attribute="name">操作结果</meta>
+			<meta attribute="comment">1表通过，2表未通过</meta>
+			<column name="proResult" not-null="false" sql-type="int" />
+		</property>
+
+		<property name="addUserId" type="java.lang.String">
+			<meta attribute="name">操作人</meta>
+			<column name="addUserId" not-null="false" length="32"/>
+		</property>
+
+		<property name="addUserName" type="java.lang.String">
+			<meta attribute="name">创建人姓名</meta>
+			<column name="addUserName" not-null="false" length="100"/>
+		</property>
+
+		<property name="remark" type="java.lang.String">
+			<meta attribute="name">操作备注</meta>
+			<column name="remark" not-null="false"   length="32"  />
+		</property>
+		<property name="ts" type="timestamp">
+			<meta attribute="name">创建时间</meta>
+			<column name="ts" not-null="true" sql-type="datetime" />
+		</property>
+
+		<many-to-one name="wfWork" class="com.zswxsqxt.wf.model.WfWork" lazy="false"  cascade="none" not-null="true">
+			<meta attribute="name">流程进程ID</meta>
+			<column name="workId"  sql-type="varchar(32)" />
+		</many-to-one>
+	</class>
+</hibernate-mapping>

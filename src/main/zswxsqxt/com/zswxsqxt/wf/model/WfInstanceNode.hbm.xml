@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+ <!--流程实例节点表-->
+<hibernate-mapping>
+	<class name="com.zswxsqxt.wf.model.WfInstanceNode" table="wf_instance_node">
+
+		<id name="id" type="java.lang.String">
+			<meta attribute="name">id</meta>
+			<column name="id" not-null="true"   length="32"  />
+			<generator class="uuid" />
+		</id>
+
+		<property name="name" type="java.lang.String">
+			<meta attribute="name">名称</meta>
+			<column name="name" not-null="false"   length="100"  />
+		</property>
+
+		<property name="orderNum" type="java.lang.Integer">
+			<meta attribute="name">节点顺序</meta>
+			<meta attribute="comment">1表未确认,2表确认通过,3表未录取</meta>
+			<column name="orderNum" not-null="false"   sql-type="int" />
+		</property>
+
+		<property name="actType" type="java.lang.Integer">
+			<meta attribute="name">节点类型</meta>
+			<meta attribute="comment">顺序，并行分支，排它选择，合并，启动，结束</meta>
+			<column name="actType" not-null="false"   sql-type="int" />
+		</property>
+
+		<property name="actFlag" type="java.lang.Integer">
+			<meta attribute="name">节点状态</meta>
+			<meta attribute="comment">是否完成标识，节点运行状态</meta>
+			<column name="actFlag" not-null="false"   sql-type="int" />
+		</property>
+
+		<property name="description" type="java.lang.String">
+			<meta attribute="name">功能描述</meta>
+			<column name="description" not-null="false"   sql-type="text" />
+		</property>
+		
+		<property name="ynCountersign" type="java.lang.Integer">
+			<meta attribute="name">是否会签 0否，1是</meta>
+			<column name="ynCountersign" not-null="false"   sql-type="int" />
+		</property>
+		
+		<property name="signNum" type="java.lang.Integer">
+			<meta attribute="name">会签人数</meta>
+			<column name="signNum" not-null="false"   sql-type="int" />
+		</property>
+
+		<property name="url" type="java.lang.String">
+			<meta attribute="name">路径</meta>
+			<column name="url" not-null="false"   length="200"  />
+		</property>
+
+		<property name="groupFlag" type="java.lang.String">
+			<meta attribute="name">分组</meta>
+			<column name="groupFlag" not-null="false"   length="10"  />
+		</property>
+
+		<property name="share" type="java.lang.String">
+			<meta attribute="name">是否分享审核意见</meta>
+			<column name="share" not-null="false"   length="200"  />
+		</property>
+		<property name="ts" type="timestamp">
+			<meta attribute="name">创建时间</meta>
+			<column name="ts" not-null="true" sql-type="datetime" />
+		</property>
+
+		<many-to-one name="wfInstanceFunction" class="com.zswxsqxt.wf.model.WfInstanceFunction" lazy="false"  cascade="none" not-null="true">
+			<meta attribute="name">功能</meta>
+			<column name="funId"  sql-type="varchar(32)" />
+		</many-to-one>
+
+		<many-to-one name="wfInstance" class="com.zswxsqxt.wf.model.WfInstance" lazy="false"  cascade="none" not-null="true">
+			<meta attribute="name">实例id</meta>
+			<column name="instanceId"  sql-type="varchar(32)" />
+		</many-to-one>
+
+		 <set name="wfInstanceParticipans" cascade="delete">
+			<meta attribute="name">流程参与者</meta>
+		 	<key column="actId" />
+		 	<one-to-many class="com.zswxsqxt.wf.model.WfInstanceParticipan" />
+		</set>
+
+		 <set name="wfInstanceAudits" cascade="delete">
+			<meta attribute="name">流程审核表</meta>
+		 	<key column="iaId" />
+		 	<one-to-many class="com.zswxsqxt.wf.model.WfInstanceAudit" />
+		</set>
+	</class>
+</hibernate-mapping>

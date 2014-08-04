@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+ <!--流程功能点表-->
+<hibernate-mapping>
+	<class name="com.zswxsqxt.wf.model.WfFunction" table="wf_function">
+
+		<id name="id" type="java.lang.String">
+			<meta attribute="name">id</meta>
+			<column name="id" not-null="true"   length="32"  />
+			<generator class="uuid" />
+		</id>
+
+		<property name="name" type="java.lang.String">
+			<meta attribute="name">名称</meta>
+			<meta attribute="comment"></meta>
+			<column name="name" not-null="false"   length="100"  />
+		</property>
+		
+		<property name="groupFlag" type="java.lang.Integer">
+			<meta attribute="name"></meta>
+			<meta attribute="comment">1表课程，2表协作组，3表示组班；4表示公文</meta>
+			<column name="groupFlag" not-null="false"   sql-type="int" />
+		</property>
+		
+		<property name="url" type="java.lang.String">
+			<meta attribute="name">页面url</meta>
+			<column name="url" not-null="false"   length="200"  />
+		</property>
+
+		<property name="parName" type="java.lang.String">
+			<meta attribute="name">参数名称</meta>
+			<meta attribute="comment">固定的参数名称,wfid,actid</meta>
+			<column name="parName" not-null="false"   length="200"  />
+		</property>
+
+		<property name="description" type="java.lang.String">
+			<meta attribute="name">功能描述</meta>
+			<column name="description" not-null="false"   sql-type="text" />
+		</property>
+
+		<property name="funType" type="java.lang.Integer">
+			<meta attribute="name">功能分类</meta>
+			<meta attribute="comment">业务功能的标识</meta>
+			<column name="funType" not-null="false"   sql-type="int" />
+		</property>
+
+		<property name="insType" type="java.lang.Integer">
+			<meta attribute="name">节点类型</meta>
+			<meta attribute="comment">1启动节点，２表普通，９表结束结点</meta>
+			<column name="insType" not-null="false"   sql-type="int" />
+		</property>
+		<property name="ts" type="timestamp">
+			<meta attribute="name">创建时间</meta>
+			<column name="ts" not-null="true" sql-type="datetime" />
+		</property>
+
+		 <set name="wfActivitys">
+			<meta attribute="name">流程节点表</meta>
+		 	<key column="funId" />
+		 	<one-to-many class="com.zswxsqxt.wf.model.WfActivity" />
+		</set>
+	</class>
+</hibernate-mapping>
