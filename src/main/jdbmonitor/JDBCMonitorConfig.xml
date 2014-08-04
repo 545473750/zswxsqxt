@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<Active>true</Active>
+    <!-- 控制台监听器 
+    <Listener class="cn.com.ebmp.dbmonitor.listenerImpl.ConsoleDBListener" arg=""/>
+    -->
+    <!--  文件监听器
+    <Listener class="cn.com.ebmp.dbmonitor.listenerImpl.FileDBListener" arg="c:/aaa.txt"/>
+    -->
+    <!-- socket监听器 
+    <Listener class="cn.com.wcm.dbmonitor.listenerImpl.SocketDBListener" arg="9527"/>
+    -->
+    <!-- 数据库监听  -->
+   	<Listener class="cn.com.ebmp.dbmonitor.listenerImpl.SystemDataBaseListener" arg=""/>
+  	<JdbcDrivers>
+    	<JdbcDriver class="net.sourceforge.jtds.jdbc.Driver"/>
+  	</JdbcDrivers>
+  	<!-- 数据表监听配置  tableName:记录监听信息的表名 isWrite:true|false 表示是否进行记录到库-->
+  	<lisenterTables lisenterTableName="T_lisenterInfo" isWrite="false">
+  		<!-- name:要监听的表名  -->
+  		<table name="th_baseinfo"/>
+  		<table name="st_baseinfo"/>
+  	</lisenterTables>
+</config>
