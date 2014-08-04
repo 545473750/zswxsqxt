@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="zswxsqxt">
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/jdbmonitor"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/attachment"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/freesql"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/zswxsqxt"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/inform"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/lg"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/message"/>
+        <wb-resource deploy-path="/" source-path="/src/main/webapp"/>
+        <property name="java-output-path" value="/zswxsqxt/WebRoot/WEB-INF/classes"/>
+        <property name="context-root" value="/"/>
+    </wb-module>
+</project-modules>
