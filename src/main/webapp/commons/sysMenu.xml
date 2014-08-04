@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tree id="0">
+	<item text="组织机构管理" id="ORG" im0="folderClosed.gif" im1="folderOpen.gif" im2="folderClosed.gif">
+		<item text="用户管理" id="ORG_USER" im0="icon/s/bell.png" im1="icon/s/bell.png" im2="icon/s/bell.png">
+		<userdata name="url">/organiz/User!list.do</userdata>
+		</item>
+		<item text="部门管理" id="ORG_DEPT" im0="icon/s/bell.png" im1="icon/s/bell.png" im2="icon/s/bell.png">
+		<userdata name="url">/organiz/Dept!list.do</userdata>
+		</item>
+		<item text="角色管理" id="ORG_ROLE" im0="icon/s/bell.png" im1="icon/s/bell.png" im2="icon/s/bell.png">
+		<userdata name="url">/organiz/Role!list.do</userdata>
+		</item>
+		<item text="权限管理" id="ORG_PERMISSION" im0="icon/s/bell.png" im1="icon/s/bell.png" im2="icon/s/bell.png">
+			<userdata name="url">/application/Permission!list.do</userdata>
+		</item>
+		
+	</item>
+
+</tree>
