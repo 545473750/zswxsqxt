@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="zswxsqxt"
+  id="myeclipse.1406625780946"
+  context-root="/"
+  j2ee-spec="5.0"
+  archive="zswxsqxt.war">
+  <attributes>
+    <attribute name="webrootdir" value="src/main/webapp" />
+  </attributes>
+</project-module>
+
