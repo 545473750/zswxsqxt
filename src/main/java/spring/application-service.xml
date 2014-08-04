@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd 
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd"    default-autowire="byName" default-lazy-init="false">
+
+	<!--配置aspect
+	<bean id="logUtil" class="com.opendata.util.LogUtil" />
+	<bean id="FunctionLogUtil" class="com.opendata.util.FunctionLogUtil" />-->
+	<bean id="AfterThrowingUtil" class="com.opendata.common.log.AfterThrowingUtil" />
+	<bean id="logUtil" class="com.opendata.common.log.LogUtil" />
+	<bean id="dicUtil" class="com.opendata.common.dict.DicUtil" />
+	
+	<!-- 系统参数util -->
+	<bean id="sysVariableUtil" class="com.opendata.common.util.SysVariableUtil"/>
+	
+	<bean id="common" class="com.opendata.common.util.Common" />
+	<bean id="autoDeleteLog" class="com.opendata.sys.service.AutoDeleteLog" />
+	<!-- component-scan自动搜索@Component , @Controller , @Service , @Repository等标注的类 -->
+	<context:component-scan base-package="com.**.*service" />
+
+</beans>

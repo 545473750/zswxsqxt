@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+ <!--系统编制-->
+<hibernate-mapping>
+	<class name="com.opendata.sys.model.Bianzhi" table="t_bianzhi">
+
+		<id name="id" type="java.lang.String">
+			<meta attribute="name">id</meta>
+			<column name="id" not-null="true"   length="32"  />
+			<generator class="uuid" />
+		</id>
+
+		<property name="name" type="java.lang.String">
+			<meta attribute="name">编制名称</meta>
+			<column name="name" not-null="false"   length="100"  />
+		</property>
+
+		<property name="orgId" type="java.lang.String">
+			<meta attribute="name">所属单位</meta>
+			<column name="orgId" not-null="false"   length="32"  />
+		</property>
+		
+		<property name="deptId" type="java.lang.String">
+			<meta attribute="name">所属部门</meta>
+			<column name="deptId" not-null="false"   length="32"  />
+		</property>
+
+		<property name="scope" type="java.lang.String">
+			<meta attribute="name">业务范围</meta>
+			<meta attribute="comment">多个人值,可以是逗号分开.</meta>
+			<column name="scope" not-null="false"   length="100"  />
+		</property>
+
+		<property name="roleId" type="java.lang.String">
+			<meta attribute="name">角色</meta>
+			<meta attribute="comment"></meta>
+			<column name="roleId" not-null="false"   length="32"  />
+		</property>
+
+		<property name="subjectId" type="java.lang.String">
+			<meta attribute="name">学科</meta>
+			<meta attribute="comment">菜单的ID,逗号分隔</meta>
+			<column name="subjectId" not-null="false"   length="32"  />
+		</property>
+
+		<property name="semester" type="java.lang.String">
+			<meta attribute="name">学段</meta>
+			<meta attribute="comment">１表正常，２表启用</meta>
+			<column name="semester" not-null="false"   length="50" />
+		</property>
+
+		<property name="userId" type="java.lang.String">
+			<meta attribute="name">在编人员id</meta>
+			<column name="userId" not-null="false"   length="32"  />
+		</property>
+		
+		<property name="userName" type="java.lang.String">
+			<meta attribute="name">在编人员姓名</meta>
+			<column name="userName" not-null="false"   length="32"  />
+		</property>
+		
+		<property name="userNum" type="java.lang.String">
+			<meta attribute="name">在编人员继教号</meta>
+			<column name="userNum" not-null="false"   length="32"  />
+		</property>
+		
+		
+		<property name="parentId" type="java.lang.String">
+			<meta attribute="name">直接上级</meta>
+			<column name="parentId" not-null="false"   length="32"  />
+		</property>
+		
+
+		<property name="isOut" type="java.lang.String">
+			<meta attribute="name">是否外部编制</meta>
+			<column name="isOut" not-null="false"   length="1"  />
+		</property>
+		<!-- 
+		<property name="directHeader" type="java.lang.String">
+			<meta attribute="name">直接上级</meta>
+			<column name="directHeader" not-null="false"   length="32" />
+		</property>
+ 		-->
+		<property name="description" type="java.lang.String">
+			<meta attribute="name">编制说明</meta>
+			<column name="description" not-null="false"   length="1000"  />
+		</property>
+
+		<property name="seq" type="java.lang.Integer">
+			<meta attribute="name">显示顺序</meta>
+			<column name="seq" not-null="false"   sql-type="int" />
+		</property>
+
+		<property name="addUserId" type="java.lang.String">
+			<meta attribute="name">添加人ID</meta>
+			<column name="addUserId" not-null="false"   length="32"  />
+		</property>
+
+		<property name="addUserName" type="java.lang.String">
+			<meta attribute="name">添加人姓名</meta>
+			<column name="addUserName" not-null="false"   length="100"  />
+		</property>
+
+		<property name="addTime" type="date">
+			<meta attribute="name">添加时间</meta>
+			<column name="addTime" not-null="false"   sql-type="datetime" />
+		</property>
+		<property name="ts" type="timestamp">
+			<meta attribute="name">创建时间</meta>
+			<column name="ts" not-null="true" sql-type="datetime" />
+		</property>
+		
+		
+		<set name="bianzhis" >
+			<meta attribute="name">下级编制</meta>
+		 	<key column="parentId" />
+		 	<one-to-many class="com.opendata.sys.model.Bianzhi"  />
+		</set>
+		
+		<many-to-one name="bianzhi" class="com.opendata.sys.model.Bianzhi" lazy="false"  insert="false" update="false" >
+			<meta attribute="name">上级编制</meta>
+			<column name="parentId"  sql-type="varchar(32)" />
+		</many-to-one>
+		
+		<many-to-one name="user" class="com.opendata.organiz.model.User" lazy="false"  insert="false" update="false" >
+			<meta attribute="name">在编人员</meta>
+			<column name="userId"  sql-type="varchar(32)" />
+		</many-to-one>
+	
+		<many-to-one name="role" class="com.opendata.organiz.model.Role" lazy="false"  insert="false" update="false" >
+			<meta attribute="name">角色</meta>
+			<column name="roleId"  sql-type="varchar(32)" />
+		</many-to-one>
+		
+		<many-to-one name="org" class="com.opendata.organiz.model.Organization" lazy="false" insert="false" update="false"  >
+			<meta attribute="name">组织机构</meta>
+			<column name="orgId"  sql-type="varchar(32)" />
+		</many-to-one>
+		<many-to-one name="dept" class="com.opendata.organiz.model.Dept" lazy="false" insert="false" update="false"  >
+			<meta attribute="name">组织机构</meta>
+			<column name="deptId"  sql-type="varchar(32)" />
+		</many-to-one>
+		
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<init>
+	<!-- 数据字典 
+	<dic>
+		<dicItem name="资源数据类型" code="zysjlx" editf="0" description="资源必要数据字典、误删">
+			<dicValue name="文本" code="zysjlx-01"/>
+			<dicValue name="视频" code="zysjlx-02"/>
+			<dicValue name="图片" code="zysjlx-03"/>
+			<dicValue name="文档" code="zysjlx-04"/>
+			<dicValue name="其他" code="zysjlx-05"/>
+		</dicItem>
+		
+	</dic>
+	-->
+</init>

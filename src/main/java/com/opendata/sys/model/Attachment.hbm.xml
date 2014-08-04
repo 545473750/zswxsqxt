@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+ <!--附件表-->
+<hibernate-mapping>
+	<class name="com.opendata.sys.model.Attachment" table="attachment">
+
+		<id name="id" type="java.lang.String">
+			<meta attribute="name">id</meta>
+			<column name="id" not-null="true"   length="32"  />
+			<generator class="uuid" />
+		</id>
+
+		<property name="fileName" type="java.lang.String">
+			<meta attribute="name">文件名</meta>
+			<column name="fileName" not-null="false"   length="200"  />
+		</property>
+
+		<property name="filePath" type="java.lang.String">
+			<meta attribute="name">文件路径</meta>
+			<column name="filePath" not-null="false"   length="1000"  />
+		</property>
+
+		<property name="uriFileName" type="java.lang.String">
+			<meta attribute="name">文件全路径</meta>
+			<column name="uriFileName" not-null="false"   length="1500"  />
+		</property>
+
+		<property name="extension" type="java.lang.String">
+			<meta attribute="name">文件类型</meta>
+			<column name="extension" not-null="false"   length="500"  />
+		</property>
+		
+		<property name="suffix" type="java.lang.String">
+			<meta attribute="name">文件后缀</meta>
+			<column name="suffix" not-null="false"   length="50"  />
+		</property>
+
+		<property name="fullName" type="java.lang.String">
+			<meta attribute="name">文件全名</meta>
+			<column name="fullName" not-null="false"   length="200"  />
+		</property>
+
+		<property name="refId" type="java.lang.String">
+			<meta attribute="name">关联id</meta>
+			<column name="refId" not-null="false"   length="32"  />
+		</property>
+		
+		<property name="resId" type="java.lang.String">
+			<meta attribute="name">资源云中资源的ID</meta>
+			<column name="resId" not-null="false" length="32"/>
+		</property>
+
+		<property name="addUserId" type="java.lang.String">
+			<meta attribute="name">创建人</meta>
+			<column name="addUserId" not-null="false"   length="32"  />
+		</property>
+
+		<property name="addUserName" type="java.lang.String">
+			<meta attribute="name">创建人姓名</meta>
+			<column name="addUserName" not-null="false"   length="100"  />
+		</property>
+
+		<property name="ts" type="date">
+			<meta attribute="name">创建时间</meta>
+			<column name="ts" not-null="false"   sql-type="datetime" />
+		</property>
+
+		<property name="fileSize" type="java.lang.Integer">
+			<meta attribute="name">文件大小</meta>
+			<column name="fileSize" not-null="false"   sql-type="int" />
+		</property>
+		
+		<property name="attachmentType" type="java.lang.Integer">
+			<meta attribute="name">附件类型（比如：课程材料、课程封面）</meta>
+			<column name="attachmentType" not-null="false" sql-type="int"  />
+		</property>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="com.opendata.calendar.model">
+  <class name="SysCalendar" table="sys_calendar" discriminator-value="0">
+  
+    <id name="id" type="string">
+		<meta attribute="name">主键</meta>
+		<column name="id" length="32" not-null="true" />
+		<generator class="uuid" />
+    </id>
+     <property name="year" type="int">
+		<meta attribute="name">年</meta>
+		<column name="year"  not-null="true" />
+    </property>
+     <property name="month" type="int">
+		<meta attribute="name">月</meta>
+		<column name="month"  not-null="true" />
+    </property>
+     <property name="day" type="int">
+		<meta attribute="name">日</meta>
+		<column name="day"  not-null="true" />
+    </property>
+     <property name="sysDate" type="string">
+		<meta attribute="name">年月日</meta>
+		<column name="systemDate"  not-null="true" length="19" />
+    </property>
+     <property name="week" type="int">
+		<meta attribute="name">星期</meta>
+		<column name="week"  not-null="true" />
+    </property>
+     <property name="state" type="int">
+		<meta attribute="name">工作状态  1:工作日 0：非工作日</meta>
+		<column name="state"  not-null="true" />
+    </property>
+     <property name="remark" type="string">
+		<meta attribute="name">备注</meta>
+		<column name="remark"  not-null="false" length="500" />
+    </property>
+     <property name="lunarDay" type="string">
+		<meta attribute="name">阴历日期</meta>
+		<column name="lunarDay"  not-null="false" length="100" />
+    </property>
+     <property name="festival" type="string">
+		<meta attribute="name">节日全称</meta>
+		<column name="festival"  not-null="false" length="100" />
+    </property>
+    <property name="simpleFestival" type="string">
+		<meta attribute="name">节日简称</meta>
+		<column name="simpleFestival"  not-null="false" length="100" />
+    </property>
+    <property name="solarTerms" type="string">
+		<meta attribute="name">节气</meta>
+		<column name="solarTerms"  not-null="false" length="100" />
+    </property>
+  </class>
+</hibernate-mapping>

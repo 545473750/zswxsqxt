@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+ <!--系统分级管理员-->
+<hibernate-mapping>
+	<class name="com.opendata.organiz.model.Manager" table="t_manager">
+
+		<id name="id" type="java.lang.String">
+			<meta attribute="name">id</meta>
+			<column name="id" not-null="true"   length="32"  />
+			<generator class="uuid" />
+		</id>
+
+		<property name="userId" type="java.lang.String">
+			<meta attribute="name">用户id</meta>
+			<column name="userId" not-null="false"   length="32"  />
+		</property>
+
+		<property name="name" type="java.lang.String">
+			<meta attribute="name">用户姓名</meta>
+			<column name="name" not-null="false"   length="100"  />
+		</property>
+
+		<property name="dataScope" type="java.lang.Integer">
+			<meta attribute="name">数据范围</meta>
+			<meta attribute="comment">1表个人,2表部门,3表指定,9表全部</meta>
+			<column name="dataScope" not-null="false"   sql-type="int" />
+		</property>
+
+		<property name="scopeValue" type="java.lang.String">
+			<meta attribute="name">数据范围值</meta>
+			<meta attribute="comment">多个人值,可以是逗号分开.</meta>
+			<column name="scopeValue" not-null="false"   length="1000"  />
+		</property>
+
+		<property name="menuIds" type="java.lang.String">
+			<meta attribute="name">菜单</meta>
+			<meta attribute="comment">菜单的ID,逗号分隔</meta>
+			<column name="menuIds" not-null="false"   length="1500"  />
+		</property>
+
+		<property name="userState" type="java.lang.Integer">
+			<meta attribute="name">管理状态</meta>
+			<meta attribute="comment">１表正常，２表启用</meta>
+			<column name="userState" not-null="false"   sql-type="int" />
+		</property>
+
+		<property name="addUserId" type="java.lang.String">
+			<meta attribute="name">添加人ID</meta>
+			<column name="addUserId" not-null="false"   length="32"  />
+		</property>
+
+		<property name="addName" type="java.lang.String">
+			<meta attribute="name">添加人姓名</meta>
+			<column name="addName" not-null="false"   length="100"  />
+		</property>
+
+		<property name="addTime" type="date">
+			<meta attribute="name">添加时间</meta>
+			<column name="addTime" not-null="false"   sql-type="datetime" />
+		</property>
+		<property name="ts" type="timestamp">
+			<meta attribute="name">创建时间</meta>
+			<column name="ts" not-null="true" sql-type="datetime" />
+		</property>
+	</class>
+</hibernate-mapping>

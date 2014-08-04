@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:cxf="http://cxf.apache.org/core"
+	xsi:schemaLocation="http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
+	default-lazy-init="false" default-autowire="byName">
+
+	<description>Apache CXF Web Service服务端配置</description>
+
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
+
+	<!-- 应用列表  -->
+	<bean id="application" class="com.opendata.webservice.application.impl.ApplicationWebServiceImpl" />
+	<jaxws:endpoint id="applicationService" implementor="#application"  address="/ApplicationService" />
+    
+    <!-- 数据字典  -->
+    <bean id="dict" class="com.opendata.webservice.sys.impl.DictWebServiceImpl" />
+    <jaxws:endpoint id="dictService" implementor="#dict"  address="/DictService" />
+    
+    <!-- 系统同步  -->
+    <bean id="SystemSynchronous" class="com.opendata.webservice.sys.impl.SystemSynchronousServiceImpl" />
+    <jaxws:endpoint id="SystemSynchronousService" implementor="#SystemSynchronous"  address="/SystemSynchronous" />
+    
+    <!-- 图片附件上传
+    <jaxws:client id="pictureService" 
+		    serviceClass="com.opendata.webservice.sys.PictureService" 
+		    address="http://192.168.0.230:9060/attachment/service/pictureService"/>
+		     -->
+    <!-- 测试 -->
+    <!--  
+    <jaxws:client id="SystemSynchronousClient" 
+		    serviceClass="com.opendata.webservice.sys.SystemSynchronousService" 
+		    address="http://127.0.0.1:80/UEServer/cxfServlet/SystemSynchronous"/>
+	-->	    
+</beans>

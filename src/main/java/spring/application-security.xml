@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+    xmlns:beans="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+                        
+    <!-- <debug/>   -->    
+    <http pattern="/commons/**" security="none"/>
+    <http pattern="/images/**" security="none"/>
+    <http pattern="/scripts/**" security="none"/>
+    <http pattern="/styles/**" security="none"/>
+    <http pattern="/tags/**" security="none"/>
+    <http pattern="/widgets/**" security="none"/>
+    <http pattern="/cxfServlet/*" security="none"></http>
+    <http pattern="/login.jsp" security="none"/>
+    
+    <http use-expressions="true" entry-point-ref="authenticationProcessingFilterEntryPoint" access-denied-page="/commons/403.jsp">
+        <logout logout-success-url="/login/Login!logout.do"/>
+        <!-- 实现免登陆验证 
+        	<remember-me data-source-ref="dataSource"/>
+        -->
+         
+        <session-management invalid-session-url="/login.jsp">
+            <concurrency-control max-sessions="10" error-if-maximum-exceeded="true" />
+        </session-management>
+       	<custom-filter ref="loginFilter" position="FORM_LOGIN_FILTER"  />
+		<custom-filter ref="securityFilter" before="FILTER_SECURITY_INTERCEPTOR"/>
+    </http>
+    
+    <!-- 登录验证器 -->
+    <beans:bean id="loginFilter"
+		class="com.opendata.springsecurity.MyUsernamePasswordAuthenticationFilter">
+		<!-- 处理登录 -->
+		<beans:property name="filterProcessesUrl" value="/j_spring_security_check"></beans:property>
+		<beans:property name="authenticationSuccessHandler" ref="loginLogAuthenticationSuccessHandler"></beans:property>
+		<beans:property name="authenticationFailureHandler" ref="simpleUrlAuthenticationFailureHandler"></beans:property>
+		<beans:property name="authenticationManager" ref="myAuthenticationManager"></beans:property>
+		
+		<beans:property name="userManager" ref="userManager"></beans:property>
+		
+	</beans:bean>
+	<beans:bean id="loginLogAuthenticationSuccessHandler"
+		class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
+		<beans:property name="defaultTargetUrl" value="/login/Login!login.do"></beans:property>
+	</beans:bean>
+	<beans:bean id="simpleUrlAuthenticationFailureHandler"
+		class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+		<beans:property name="defaultFailureUrl" value="/login.jsp"></beans:property>
+	</beans:bean>
+	
+    <!-- 认证过滤器 -->
+    <beans:bean id="securityFilter" class="com.opendata.springsecurity.MySecurityFilter">
+    	<!-- 用户拥有的权限 -->
+    	<beans:property name="authenticationManager" ref="myAuthenticationManager" />
+    	<!-- 用户是否拥有所请求资源的权限 -->
+    	<beans:property name="accessDecisionManager" ref="myAccessDecisionManager" />
+    	<!-- 资源与权限对应关系 -->
+    	<beans:property name="securityMetadataSource" ref="mySecurityMetadataSource" />
+    </beans:bean>
+    
+    <!-- 实现了UserDetailsService的Bean -->
+    <authentication-manager alias="myAuthenticationManager" erase-credentials="false">
+        <authentication-provider user-service-ref="myUserDetailServiceImpl" />
+    </authentication-manager>
+    
+    <beans:bean id="myAccessDecisionManager" class="com.opendata.springsecurity.MyAccessDecisionManager">
+    	<beans:property name="permissionManager" ref="permissionManager"></beans:property>
+    	<beans:property name="logManager" ref="logManager"></beans:property>
+    </beans:bean>
+	<beans:bean id="mySecurityMetadataSource" class="com.opendata.springsecurity.MySecurityMetadataSource">
+		<beans:constructor-arg name="permissionManager" ref="permissionManager"></beans:constructor-arg>
+	</beans:bean>
+	<beans:bean id="myUserDetailServiceImpl" class="com.opendata.springsecurity.MyUserDetailServiceImpl">
+		<beans:property name="userManager" ref="userManager"></beans:property>
+		<beans:property name="resourcesManager" ref="resourcesManager"></beans:property>
+	</beans:bean>
+	
+	<!-- 未登录的切入点 -->
+	<beans:bean id="authenticationProcessingFilterEntryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+		<beans:property name="loginFormUrl" value="/login.jsp"></beans:property>
+	</beans:bean>
+</beans:beans>
