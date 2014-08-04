@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+ <!--国际化-->
+<hibernate-mapping>
+	<class name="com.opendata.lg.model.Language" table="t_language">
+
+		<id name="id" type="java.lang.String">
+			<meta attribute="name">id</meta>
+			<column name="id" not-null="true" length="32"  />
+			<generator class="uuid" />
+		</id>
+
+		<property name="code" type="java.lang.String">
+			<meta attribute="name">代码</meta>
+			<column name="code" length="400"  not-null="false"  />
+		</property>
+
+		<property name="chinese" type="java.lang.String">
+			<meta attribute="name">中文</meta>
+			<column name="chinese" length="400"  not-null="false"  />
+		</property>
+
+		<property name="english" type="java.lang.String">
+			<meta attribute="name">英文</meta>
+			<column name="english" length="400"  not-null="false"  />
+		</property>
+
+		<property name="japanese" type="java.lang.String">
+			<meta attribute="name">日文</meta>
+			<column name="japanese" length="400"  not-null="false" />
+		</property>
+
+		<property name="russian" type="java.lang.String">
+			<meta attribute="name">法文</meta>
+			<column name="russian" length="400"  not-null="false"  />
+		</property>
+		<property name="ts" type="timestamp">
+			<meta attribute="name">创建时间</meta>
+			<column name="ts" not-null="true" sql-type="datetime" />
+		</property>
+	</class>
+</hibernate-mapping>
