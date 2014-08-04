@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//freesql.org//DTD Config 3.0//EN"  "http://freesql.org/dtd/freesql-3-config.dtd">
+<configuration develop="true">
+	<mappers>
+		<mapper  resource="permission.mapper.xml"/>
+		<mapper  resource="wfactivity.mapper.xml"/>
+		<mapper  resource="user.mapper.xml"/>
+	</mappers>
+</configuration>
+

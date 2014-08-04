@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//freesql.org//DTD Mapper 3.0//EN"  "http://freesql.org/dtd/freesql-3-mapper.dtd">
+<mapper namespace="system">
+	
+	<!-- 科室重点监察上报任务列表查询 -->
+	<select id="findKsZdjcSbList"  parameterType="java.util.HashMap" resultType="com.zg.zdjc.beans.GreatTaskBean">
+		select
+		  task.id,
+		  task.year,
+		  task.projectType,
+		  task.confirmType,
+		  task.zdProjectTypeId,
+		  task.name,
+		  task.beginDate,
+		  task.endDate,
+		  task.state,
+		  task.mainName,
+		  (
+		    select isnull(count(1),0) from zdjc_tender as td where td.greatTaskId=task.id and ratifyTenderType!=realTenderType
+		  ) as tenderTypeColor,
+		  (
+		    select isnull(count(1),0) from zdjc_tender as td where td.greatTaskId=task.id and ratifyOrgType!=realOrgType
+		  ) as tenderOrgColor,
+		  (
+		    select isnull(count(1),0) from zdjc_tender as td where td.greatTaskId=task.id and aimMoney!=contractMoney
+		  ) as tenderMoneyColor,
+		  (
+		    select isnull(count(1),0) from zdjc_tender as td where td.greatTaskId=task.id and aimMoney &gt; agreeMoney
+		  ) as tenderAgreeMoneyColor,
+		  (
+		    select isnull(count(1),0) from zdjc_tender as td where td.greatTaskId=task.id and honest = 'honest2'
+		  ) as tenderHonestColor,
+		  (
+		    select isnull(count(1),0) from zdjc_monthReport as rp where #{sysTime} &gt; planReportDate and rp.greatTaskId=task.id
+		  ) as monthReportColor,
+		 	
+		 	(
+		    select isnull(count(1),0) from 
+		  		(
+					select  
+		  				(planProcess-currentProcess)/planProcess as process 
+					from 
+		  				zdjc_monthReport as rp 
+		  			where rp.greatTaskId=task.id and rp.reportDate is not null and currentProcess &lt; planProcess
+				 ) as tmpTable_mr1 where tmpTable_mr1.process &lt; 0.3
+		    ) as montReportSmallReport,
+		 	(
+		    	select isnull(count(1),0) from zdjc_greatChange as gc where gc.changeMoney &gt; 20 and gc.greatTaskId=task.id
+		    ) as greatChangeSmallTwo,
+		 	(
+		    	select isnull(count(1),0) from 
+		        (
+					select sum(gc.changeMoney) as sumChangMoney from zdjc_greatChange as gc where gc.greatTaskId=task.id
+				) as tmpTable_gc where tmpTable_gc.sumChangMoney &gt; 50
+		    ) as greatChangeSmallFive,	
+		 			
+		   (
+		    select isnull(count(1),0) from 
+				(
+				select 
+					sum(gc.changeMoney) as sumChangeMoney,
+					(select sum(contractMoney)*0.1 from zdjc_tender where greatTaskId=task.id) as contractMoney
+				from zdjc_greatChange as gc 
+				where gc.greatTaskId=task.id
+			    ) as tmpTable
+			 where tmpTable.sumChangeMoney &gt; tmpTable.contractMoney
+		    ) as greatChangePassPercentTen 
+		from 
+		  zdjc_greatTask task,zdjc_zgProjectType pt
+		<where>
+			task.zdProjectTypeId=pt.id
+			<if test="dutyUnit != null and dutyUnit != ''">
+			    and task.dutyUnit in (${dutyUnit})
+			</if>
+			<if test="dutyUnit != null and dutyUnit == ''">
+			    and task.dutyUnit = ''
+			</if>
+			<if test="year != null">
+				and task.year = #{year}
+			</if>
+			<if test="name != null and name != ''">
+				and task.name like '%${name}%'
+			</if>
+			<if test="projectType != null and projectType != ''">
+				and task.projectType = #{projectType}
+			</if>
+			<if test="zdProjectTypeId != null and zdProjectTypeId != ''">
+				and task.zdProjectTypeId = #{zdProjectTypeId}
+			</if>
+			
+			
+			<if test="state != null and state != 2 ">
+				and task.state = ${state}
+			</if>
+		</where>
+		<if test="sortColumns != null and sortColumns != ''">
+			order by ${sortColumns}
+		</if>  
+	</select>
+	
+	<!-- 重点监察督查任务列表 -->
+	<select id="findKsZdjcDcList" parameterType="java.util.HashMap" resultType="com.zg.zdjc.beans.GreatTaskBean">
+		select
+		  task.id,
+		  task.year,
+		  task.projectType,
+		  task.confirmType,
+		  task.zdProjectTypeId,
+		  task.dutyUnit,
+		  task.name,
+		  task.beginDate,
+		  task.endDate,
+		  task.state,
+		  task.mainName,
+		  (
+		    select isnull(count(1),0) from zdjc_tender as td where td.greatTaskId=task.id and ratifyTenderType!=realTenderType
+		  ) as tenderTypeColor,
+		  (
+		    select isnull(count(1),0) from zdjc_tender as td where td.greatTaskId=task.id and ratifyOrgType!=realOrgType
+		  ) as tenderOrgColor,
+		  (
+		    select isnull(count(1),0) from zdjc_tender as td where td.greatTaskId=task.id and aimMoney!=contractMoney
+		  ) as tenderMoneyColor,
+		  (
+		    select isnull(count(1),0) from zdjc_tender as td where td.greatTaskId=task.id and aimMoney &gt; agreeMoney
+		  ) as tenderAgreeMoneyColor,
+		  (
+		    select isnull(count(1),0) from zdjc_tender as td where td.greatTaskId=task.id and honest = 'honest2'
+		  ) as tenderHonestColor,
+		  (
+		    select isnull(count(1),0) from zdjc_monthReport as rp where #{sysTime} &gt; planReportDate and rp.greatTaskId=task.id
+		  ) as monthReportColor,
+		 	
+		 	(
+		    select isnull(count(1),0) from 
+		  		(
+					select  
+		  				(planProcess-currentProcess)/planProcess as process 
+					from 
+		  				zdjc_monthReport as rp 
+		  			where rp.greatTaskId=task.id and rp.reportDate is not null and currentProcess &lt; planProcess
+				 ) as tmpTable_mr1 where tmpTable_mr1.process &lt; 0.3
+		    ) as montReportSmallReport,
+		 	(
+		    	select isnull(count(1),0) from zdjc_greatChange as gc where gc.changeMoney &gt; 20 and gc.greatTaskId=task.id
+		    ) as greatChangeSmallTwo,
+		 	(
+		    	select isnull(count(1),0) from 
+		        (
+					select sum(gc.changeMoney) as sumChangMoney from zdjc_greatChange as gc where gc.greatTaskId=task.id
+				) as tmpTable_gc where tmpTable_gc.sumChangMoney &gt; 50
+		    ) as greatChangeSmallFive,	
+		 			
+		   (
+		    select isnull(count(1),0) from 
+				(
+				select 
+					sum(gc.changeMoney) as sumChangeMoney,
+					(select sum(contractMoney)*0.1 from zdjc_tender where greatTaskId=task.id) as contractMoney
+				from zdjc_greatChange as gc 
+				where gc.greatTaskId=task.id
+			    ) as tmpTable
+			 where tmpTable.sumChangeMoney &gt; tmpTable.contractMoney
+		    ) as greatChangePassPercentTen,
+		    
+		    (
+		     (select count(1) from zdjc_greatChange where isRead=0 and greatTaskId=task.id)+
+		     (select count(1) from zdjc_greatValid where isRead=0 and greatTaskId=task.id)+
+		     (select count(1) from zdjc_monthReport where isRead=0 and greatTaskId=task.id)+
+		     (select count(1) from zdjc_buildProcess where isRead=0 and greatTaskId=task.id)+
+		     (select count(1) from zdjc_fundPlay where isRead=0 and greatTaskId=task.id)+
+		     (select count(1) from zdjc_dangerControl where isRead=0 and greatTaskId=task.id)+
+		     (select count(1) from zdjc_eventReport where isRead=0 and greatTaskId=task.id)+
+		     (select count(1) from zdjc_sceneImage where isRead=0 and greatTaskId=task.id)+
+		     (select count(1) from zdjc_greatResolution where isRead=0 and greatTaskId=task.id)+
+		     (select count(1) from zdjc_audit where isRead=0 and greatTaskId=task.id)+
+		     (select count(1) from zdjc_dutyFind where isRead=0 and greatTaskId=task.id)+
+		     (select count(1) from zdjc_tender where isRead=0 and greatTaskId=task.id)
+		    ) as noReadNum
+		from 
+		   zdjc_greatTask task,zdjc_zgProjectType pt
+		<where>
+			task.zdProjectTypeId=pt.id
+			<if test="state != null and state != 2">
+				and task.state = ${state}
+			</if>
+			<if test="year != null">
+				and task.year = #{year}
+			</if>
+			<if test="name != null and name != ''">
+				and task.name like '%${name}%'
+			</if>
+			<if test="projectType != null and projectType != ''">
+				and task.projectType = #{projectType}
+			</if>
+			<if test="zdProjectTypeId != null and zdProjectTypeId != ''">
+				and task.zdProjectTypeId = #{zdProjectTypeId}
+			</if>
+		</where>
+		<if test="sortColumns != null and sortColumns != ''">
+			order by ${sortColumns}
+		</if>   
+	</select>
+	
+	<select id="findWarnOne" parameterType="java.util.HashMap" resultType="com.zg.zdjc.beans.GreatTaskBean">
+		select
+		  task.id,
+		  task.year,
+		  task.projectType,
+		  task.name,
+		  task.beginDate,
+		  task.endDate,
+		  task.state,
+		  task.mainName,
+		  (
+		    select isnull(count(1),0) from zdjc_tender as td where td.greatTaskId=task.id and ratifyTenderType!=realTenderType
+		  ) as tenderTypeColor,
+		  (
+		    select isnull(count(1),0) from zdjc_tender as td where td.greatTaskId=task.id and ratifyOrgType!=realOrgType
+		  ) as tenderOrgColor,
+		  (
+		    select isnull(count(1),0) from zdjc_tender as td where td.greatTaskId=task.id and aimMoney!=contractMoney
+		  ) as tenderMoneyColor,
+		  (
+		    select isnull(count(1),0) from zdjc_tender as td where td.greatTaskId=task.id and aimMoney &gt; agreeMoney
+		  ) as tenderAgreeMoneyColor,
+		  (
+		    select isnull(count(1),0) from zdjc_tender as td where td.greatTaskId=task.id and honest = 'honest2'
+		  ) as tenderHonestColor,
+		  (
+		    select isnull(count(1),0) from zdjc_monthReport as rp where #{sysTime} &gt; planReportDate and rp.greatTaskId=task.id
+		  ) as monthReportColor,
+		 	
+		 	(
+		    select isnull(count(1),0) from 
+		  		(
+					select  
+		  				(planProcess-currentProcess)/planProcess as process 
+					from 
+		  				zdjc_monthReport as rp 
+		  			where rp.greatTaskId=task.id and rp.reportDate is not null and currentProcess &lt; planProcess
+				 ) as tmpTable_mr1 where tmpTable_mr1.process &lt; 0.3
+		    ) as montReportSmallReport,
+		 	(
+		    	select isnull(count(1),0) from zdjc_greatChange as gc where gc.changeMoney &gt; 20 and gc.greatTaskId=task.id
+		    ) as greatChangeSmallTwo,
+		 	(
+		    	select isnull(count(1),0) from 
+		        (
+					select sum(gc.changeMoney) as sumChangMoney from zdjc_greatChange as gc where gc.greatTaskId=task.id
+				) as tmpTable_gc where tmpTable_gc.sumChangMoney &gt; 50
+		    ) as greatChangeSmallFive,	
+		 			
+		   (
+		    select isnull(count(1),0) from 
+				(
+				select 
+					sum(gc.changeMoney) as sumChangeMoney,
+					(select sum(contractMoney)*0.1 from zdjc_tender where greatTaskId=task.id) as contractMoney
+				from zdjc_greatChange as gc 
+				where gc.greatTaskId=task.id
+			    ) as tmpTable
+			 where tmpTable.sumChangeMoney &gt; tmpTable.contractMoney
+		    ) as greatChangePassPercentTen 
+		from 
+		  zdjc_greatTask task
+		where task.id = #{greatTaskId}  
+	</select>
+	
+	<!-- 某一任务未查阅 -->
+	<select id="findNoReadOne" parameterType="java.util.HashMap" resultType="com.zg.zdjc.beans.GreatTaskBean">
+		select
+		  task.id,
+		  task.year,
+		  task.name,
+		  task.state,
+		  task.mainName,
+		  (select count(1) from zdjc_greatChange where isRead=0 and greatTaskId=task.id) as greatChangeNoReadNum,
+		  (select count(1) from zdjc_greatValid where isRead=0 and greatTaskId=task.id) as greatValidNoReadNum,
+		  (select count(1) from zdjc_monthReport where isRead=0 and greatTaskId=task.id) as monthReportNoReadNum,
+		  (select count(1) from zdjc_buildProcess where isRead=0 and greatTaskId=task.id) as buildProcessNoReadNum,
+		  (select count(1) from zdjc_fundPlay where isRead=0 and greatTaskId=task.id) as fundPlayNoReadNum,
+		  (select count(1) from zdjc_dangerControl where isRead=0 and greatTaskId=task.id) as dangerControlNoReadNum,
+		  (select count(1) from zdjc_eventReport where isRead=0 and greatTaskId=task.id) as eventReportNoReadNum,
+		  (select count(1) from zdjc_sceneImage where isRead=0 and greatTaskId=task.id) as sceneImageNoReadNum,
+		  (select count(1) from zdjc_greatResolution where isRead=0 and greatTaskId=task.id) as greatResolutionNoReadNum,
+		  (select count(1) from zdjc_audit where isRead=0 and greatTaskId=task.id) as auditNoReadNum,
+		  (select count(1) from zdjc_dutyFind where isRead=0 and greatTaskId=task.id) as dutyFindNoReadNum,
+		  (select count(1) from zdjc_tender where isRead=0 and greatTaskId=task.id) as tenderNoReadNum
+		from 
+		  zdjc_greatTask task
+		where 
+		  task.id = #{greatTaskId} 
+	</select>
+	
+</mapper>

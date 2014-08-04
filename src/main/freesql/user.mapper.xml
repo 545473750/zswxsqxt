@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//freesql.org//DTD Mapper 3.0//EN"  "http://freesql.org/dtd/freesql-3-mapper.dtd">
+<mapper namespace="wfactivity">
+	<select id="findUsers" parameterType="java.util.HashMap" resultType="com.opendata.organiz.model.User">
+		SELECT u.id  FROM t_user u 
+		LEFT JOIN t_organization_user_relation tou  ON u.id = tou.userId   
+		WHERE tou.organizationId = (SELECT organizationId FROM t_organization_user_relation WHERE userId = '${userId}') 
+		AND u.id not IN (SELECT userId FROM jsyx_class_bj_user WHERE classTermRecruitId = '${termRecruitId}')
+		AND u.id not in (SELECT userId FROM jsyx_class_bj_user WHERE classTermId = '${termId}')
+	</select>
+	
+	<select id="findUsers2" parameterType="java.util.HashMap" resultType="com.opendata.organiz.model.User">
+		SELECT u.id  FROM t_user u 
+		LEFT JOIN t_organization_user_relation tou  ON u.id = tou.userId   
+		WHERE tou.organizationId = (SELECT organizationId FROM t_organization_user_relation WHERE userId = '${userId}') 
+		AND u.id IN (SELECT userId FROM jsyx_class_bj_user WHERE classTermRecruitId = '${termRecruitId}'  and source = '3')
+	</select>
+</mapper>

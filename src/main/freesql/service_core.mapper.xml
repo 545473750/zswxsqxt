@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//freesql.org//DTD Mapper 3.0//EN"  "http://freesql.org/dtd/freesql-3-mapper.dtd">
+<mapper namespace="servicecore">
+	<resultMap id="customerInfoMapping" type="com.zswxsqxt.core.model.CustomerInfo">
+		<id column="id" property="id"/>
+		<result column="license_num" property="licenseNum" />
+		<result column="customer_num" property="customerNum" />
+		<result column="contract_num" property="contractNum" />
+		<result column="province" property="province" />
+		<result column="district" property="district" />
+		<result column="post_code" property="postCode" />
+		<result column="unit_name" property="unitName" />
+		<result column="unit_address" property="unitAddress" />
+		<result column="customer_type" property="customerType" />
+		<result column="contact_person" property="contactPerson" />
+		<result column="phone_number" property="phoneNumber" />
+		<result column="fax_number" property="faxNumber" />
+		<result column="open_terminal" property="openTerminal" />
+		<result column="signing_terminal" property="signingTerminal" />
+		<result column="adjustment_terminal" property="adjustmentTerminal" />
+		<result column="protocol_cycle" property="protocolCycle" />
+		<result column="channel_price" property="channelPrice" />
+		<result column="total_price" property="totalPrice" />
+		<result column="special_money" property="specialMoney" />
+		<result column="free_days" property="freeDays" />
+		<result column="remark" property="remark" />
+		<result column="ts" property="ts" />
+		<result column="change_time" property="changeTime" />
+		<collection property="nodes" resultMap="instanceNodeMapping" />
+	</resultMap>
+	
+	<!--
+	<resultMap id="sysUser" type="com.opendata.organiz.model.User">
+		<id column="user_id" property="id" />
+		<result column="loginname" property="loginname" />
+		<result column="password" property="password" />
+		<result column="username" property="username" />
+		<result column="ts" property="ts" />
+		<result column="df" property="df" />
+		<result column="isLeave" property="isLeave" />
+		<result column="abledFlag" property="abledFlag" />
+		<result column="userNum" property="userNum" />
+		<result column="cardType" property="cardType" />
+		<result column="passport" property="passport" />
+		<result column="IDNum" property="IDNum" />
+		<result column="source" property="source" />
+		<result column="module" property="module" />
+		<result column="personType" property="personType" />
+		<result column="unitId" property="unitId" />
+		<result column="unitName" property="unitName" />
+	</resultMap> -->
+	
+	<resultMap id="instanceNodeMapping" type="com.zswxsqxt.wf.model.WfInstanceNode">
+		<id column="node_id" property="id" />
+		<result column="name" property="name" />
+		<result column="orderNum" property="orderNum" />
+		<result column="description" property="description" />
+		<result column="ts" property="ts" />
+		<result column="auditValue" property="auditValue" />
+		<result column="auditorNum" property="auditorNum" />
+	</resultMap>
+
+	<select id="customerList" parameterType="com.zswxsqxt.core.query.CustomerInfoQuery" resultMap="customerInfoMapping">
+		SELECT cf.id id,cf.license_num, cf.unit_name, node.id node_id, COUNT(node.id) auditorNum, SUM(au.result) auditValue 
+		  FROM core_customerinfo cf 
+		  left join wf_Instance ins on cf.id=ins.target_id
+		  left join wf_instance_node node on ins.id=node.instanceId
+		  left join wf_instance_participan ip on ip.actId=node.id
+		  left join wf_instance_audit au on au.iaId=node.id and au.auditUserId=ip.refId
+		  group by cf.id,cf.license_num, cf.unit_name, node.id
+	</select>
+</mapper>

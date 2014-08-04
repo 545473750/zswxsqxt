@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//freesql.org//DTD Mapper 3.0//EN"  "http://freesql.org/dtd/freesql-3-mapper.dtd">
+<mapper namespace="wfactivity">
+	<select id="getOrederNum" parameterType="com.zswxsqxt.wf.model.WfProject" resultType="com.zswxsqxt.wf.model.WfActivity">
+		SELECT
+	MAX (wf_activity.orderNum) orderNum
+FROM
+	wf_activity
+WHERE
+	projectId = '${id}'
+	</select>
+	
+</mapper>

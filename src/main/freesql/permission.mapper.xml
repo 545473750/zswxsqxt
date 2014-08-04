@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//freesql.org//DTD Mapper 3.0//EN"  "http://freesql.org/dtd/freesql-3-mapper.dtd">
+<mapper namespace="permission">
+	<!--监察任务上报 ${sqlDutyUntils}   -->
+	<select id="findPermission" parameterType="com.opendata.organiz.model.User"  resultType="com.opendata.sys.model.Resources">
+		SELECT
+	r.id
+FROM
+	t_resources r
+INNER JOIN (
+	SELECT
+		t_role_resources.resources_id
+	FROM
+		t_role_resources
+	INNER JOIN t_user_role ON t_role_resources.role_id = t_user_role.role_id
+	WHERE
+		t_user_role.user_id = '${id}'
+	UNION
+		SELECT
+			t_station_resources.resources_id
+		FROM
+			t_station_resources
+		INNER JOIN t_user_station ON t_station_resources.station_id = t_user_station.station_id
+		WHERE
+			t_user_station.user_id = '${id}'
+) AS role ON r.id = role.resources_id
+ORDER BY
+	r.parent_id,
+	r.sequence
+	</select>
+	
+	<select id="findPermissionByUser" parameterType="java.util.HashMap"  resultType="com.zswxsqxt.wf.model.WfInstanceNode">
+		SELECT DISTINCT
+			node.url,
+			node.name
+		FROM
+			wf_instance_node AS node
+		LEFT JOIN wf_instance_participan AS par ON node.id = par.actId
+		WHERE
+			par.refId = '${userId}'
+		AND node.groupFlag = '${groupFlag}'	
+	</select>
+	
+	<select id="findPermissionByRole" parameterType="java.util.HashMap"  resultType="com.zswxsqxt.wf.model.WfInstanceNode">
+		SELECT DISTINCT
+			node.url,
+			node.name
+		FROM
+			wf_instance_node AS node
+		LEFT JOIN wf_instance_participan AS par ON node.id = par.actId
+		WHERE
+			par.refId IN ( SELECT role_id FROM t_user_role AS t WHERE t.user_id = '${userId}')
+		AND node.groupFlag = '${groupFlag}'
+	</select>
+	<select id="findPermissionByZJZ" parameterType="java.util.HashMap"  resultType="com.zswxsqxt.wf.model.WfInstanceNode">
+	SELECT DISTINCT
+			node.url,
+			node.name
+		FROM
+			wf_instance_node AS node
+		LEFT JOIN wf_instance_participan AS par ON node.id = par.actId
+		WHERE
+			par.refId IN (SELECT zjz.expertsId FROM jsyx_common_expertsUser AS zjz WHERE zjz.userId = '${userId}')
+	AND node.groupFlag = '${groupFlag}'
+	</select>
+</mapper>
