@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+ <!--消息提醒表-->
+<hibernate-mapping>
+	<class name="com.zg.message.model.Message" table="t_message">
+
+		<id name="id" type="java.lang.String">
+			<meta attribute="name">id</meta>
+			<column name="id" not-null="true" length="32" />
+			<generator class="uuid" />
+		</id>
+
+		<property name="receiver" type="java.lang.String">
+			<meta attribute="name">接收者</meta>
+			<column name="receiver" length="50"  not-null="true"  />
+		</property>
+
+		<property name="receiverId" type="java.lang.String">
+			<meta attribute="name">接收者Id</meta>
+			<column name="receiverId" length="50"  not-null="true"  />
+		</property>
+		
+		<property name="sponsor" type="java.lang.String">
+			<meta attribute="name">发起者</meta>
+			<column name="sponsor" length="50"  not-null="true"  />
+		</property>
+		
+		<property name="sponsorId" type="java.lang.String">
+			<meta attribute="name">发起者id</meta>
+			<column name="sponsorId" length="50"  not-null="true"  />
+		</property>
+		
+		<property name="title" type="java.lang.String">
+			<meta attribute="name">标题</meta>
+			<column name="title" length="50"  not-null="false"  />
+		</property>
+
+		<property name="time" type="date">
+			<meta attribute="name">提醒创建时间</meta>
+			<column name="time" not-null="true" sql-type="datetime" />
+		</property>
+
+		<property name="state" type="java.lang.String">
+			<meta attribute="name">消息状态</meta>
+			<meta attribute="comment">0为未查看，1为已经查看</meta>
+			<column name="state" length="8"  not-null="true"  />
+		</property>
+		
+		<property name="status" type="java.lang.String">
+			<meta attribute="name">发送状态</meta>
+			<meta attribute="comment">0为未发送，1为已发送</meta>
+			<column name="status" length="8"  not-null="true"  />
+		</property>
+		
+		<property name="chackTime" type="date">
+			<meta attribute="name">查看消息时间</meta>
+			<column name="chackTime" not-null="false" sql-type="datetime" />
+		</property>
+		
+		<property name="module" type="java.lang.String">
+			<meta attribute="name">模块 :1，学习 ；2，资源；3，教师培训；4，教学教务</meta>
+			<column name="module" not-null="false" length="1"/>
+		</property>
+		
+		<property name="messageType" type="java.lang.String">
+			<meta attribute="name">消息类别 1，交互消息 ；2，业务消息；3，系统消息</meta>
+			<column name="messageType" not-null="false" length="1"/>
+		</property>
+
+		<property name="content" type="java.lang.String">
+			<meta attribute="name">消息内容</meta>
+			<column name="content" length="2000"  not-null="false"  />
+		</property>
+		<property name="ts" type="timestamp">
+			<meta attribute="name">创建时间</meta>
+			<column name="ts" not-null="true"  sql-type="datetime" />
+		</property>
+	</class>
+</hibernate-mapping>
